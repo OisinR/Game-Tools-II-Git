@@ -33,10 +33,11 @@ public class Char : MonoBehaviour
         
         if (pForward <0.1f & pForward >-0.1f)
         {
-            velocity.x = pStrafe;
+            transform.position += transform.right * pStrafe * Time.deltaTime * moveSpeed;
         }
-        velocity.z = pForward;
-        pRb.velocity = velocity;
+        transform.position += transform.forward * pForward * Time.deltaTime * moveSpeed;
+        //pRb.velocity = velocity;
+
 
         if (attacking)
         {

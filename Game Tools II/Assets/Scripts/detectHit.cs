@@ -14,6 +14,7 @@ public class detectHit : MonoBehaviour {
     private Collider pCol;
     public Collider hitbox;
     private NavMeshAgent pAgent;
+    private Vector3 death;
 
     void Start()
     {
@@ -23,10 +24,19 @@ public class detectHit : MonoBehaviour {
         pCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
     }
+
+    private void Update()
+    {
+        death = gameObject.transform.position;
+    }
+
     private void FixedUpdate()
     {
+        //Debug.Log(transform.position.y);
+        
         if (healthbar <= 0 && !pDead)
         {
+            
             anim.SetTrigger("Dead");
             pDead = true;
             Destroy(hitbox);
@@ -34,6 +44,7 @@ public class detectHit : MonoBehaviour {
             Destroy(pChase);
             Destroy(pCol);
             Destroy(pAgent);
+            transform.position = new Vector3(transform.position.x, death.y,transform.position.z);
         }
     }
 

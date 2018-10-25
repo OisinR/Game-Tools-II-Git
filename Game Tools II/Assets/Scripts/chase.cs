@@ -18,9 +18,10 @@ public class chase : MonoBehaviour {
     private Rigidbody rb;
     private NavMeshAgent agent;
     public Collider hitBox;
+    public enemyAttack attackScript;
     void Start () 
 	{
-        hitBox.enabled = false;
+        //hitBox.enabled = false;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponentInChildren<Rigidbody>();
@@ -56,6 +57,7 @@ public class chase : MonoBehaviour {
 			{
                 agent.isStopped = true;
                 anim.SetTrigger("Attack");
+                //attackScript.attacking = true;
                 //StartCoroutine(AttackCooldown(2f));
                 anim.SetBool("isIdle", true);
 
