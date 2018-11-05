@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 888f47f5c0d355541b7fe09c55321ae9
-timeCreated: 1540212389
+guid: 8f7a6c3657b844743ba6340c1af4a1a7
+timeCreated: 1540492192
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -141,7 +141,7 @@ ModelImporter:
     400130: Spine2
     400132: //RootNode
     400134: Sword_joint
-    7400000: Strafe Right
+    7400000: Roar
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -171,45 +171,29 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Strafe Right
+      name: Roar
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 34
+      lastFrame: 85
       wrapMode: 0
-      orientationOffsetY: -30
+      orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 1
+      loopBlendOrientation: 0
       loopBlendPositionY: 1
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.5354573
-        functionName: MakeFootprint
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 8659f501bdbeec54b84dd9f14948cc2c,
-          type: 3}
-        floatParameter: 0
-        intParameter: 1
-        messageOptions: 0
-      - time: 0.9899795
-        functionName: MakeFootprint
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 8659f501bdbeec54b84dd9f14948cc2c,
-          type: 3}
-        floatParameter: 0
-        intParameter: -1
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

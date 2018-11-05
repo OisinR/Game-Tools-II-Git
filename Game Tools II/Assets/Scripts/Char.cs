@@ -8,6 +8,9 @@ public class Char : MonoBehaviour
     private Animator panim;
     public float moveSpeed;
     private float pForward, pStrafe;
+    public AudioClip m_audioClip;
+    public AudioClip m_audioClip2;
+    private AudioSource m_audioSource;
 
     public bool attacking = false;
     private float attackTimer = 0;
@@ -23,21 +26,25 @@ public class Char : MonoBehaviour
     {
         panim = GetComponentInChildren<Animator>();
         pRb = GetComponent<Rigidbody>();
-	}
+        m_audioSource = GetComponent<AudioSource>();
+    }
 
     private void Update()
     {
         pForward = Input.GetAxis("Vertical") * moveSpeed;
         pStrafe = Input.GetAxis("Horizontal") * moveSpeed;
         Vector3 velocity = pRb.velocity;
-        
-        if (pForward <0.1f & pForward >-0.1f)
-        {
-            transform.position += transform.right * pStrafe * Time.deltaTime * moveSpeed;
-        }
-        transform.position += transform.forward * pForward * Time.deltaTime * moveSpeed;
-        //pRb.velocity = velocity;
 
+        if (counter <= 0)
+        {
+
+            if (pForward < 0.1f & pForward > -0.1f)
+            {
+                transform.position += transform.right * pStrafe * Time.deltaTime * moveSpeed;
+            }
+            transform.position += transform.forward * pForward * Time.deltaTime * moveSpeed;
+            //pRb.velocity = velocity;
+        }
 
         if (attacking)
         {
@@ -54,7 +61,9 @@ public class Char : MonoBehaviour
         
     }
 
-    public void Move(float forward, float strafe, bool jump, bool attack)
+    float counter;
+
+    public void Move(float forward, float strafe, bool jump, bool attack, bool roar)
     {
         panim.SetFloat("Forward", forward);
 
@@ -71,9 +80,22 @@ public class Char : MonoBehaviour
             {
                 attacking = true;
                 attackTimer = attackCoolDown;
-
+                m_audioSource.panStereo = 1f;
+                m_audioSource.pitch = 1f;
+                m_audioSource.PlayOneShot(m_audioClip2);
                 attackTrigger.enabled = true;
             }
         }
+        if(roar &&  counter<=0)
+        {
+            float coolDown = 3f;
+            counter = coolDown;
+            panim.SetTrigger("Roar");
+            m_audioSource.panStereo = 1f;
+            m_audioSource.pitch = 1f;
+            m_audioSource.PlayOneShot(m_audioClip);
+        }
+        counter -= Time.deltaTime;
+
     }
 }

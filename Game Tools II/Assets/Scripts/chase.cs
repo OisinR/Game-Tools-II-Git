@@ -19,13 +19,18 @@ public class chase : MonoBehaviour {
     private NavMeshAgent agent;
     public Collider hitBox;
     public enemyAttack attackScript;
+
+    public AudioClip m_audioClip;
+    public AudioClip m_audioClip2;
+    private AudioSource m_audioSource;
     void Start () 
 	{
         //hitBox.enabled = false;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponentInChildren<Rigidbody>();
-	}
+        m_audioSource = GetComponent<AudioSource>();
+    }
 	
 
 	void FixedUpdate () 
@@ -53,12 +58,17 @@ public class chase : MonoBehaviour {
             anim.SetBool("isIdle", false);
             agent.destination = player.transform.position;
             state = "Pursuing";
+
+            m_audioSource.panStereo = 1f;
+            m_audioSource.pitch = 1f;
+            m_audioSource.PlayOneShot(m_audioClip2);
             if (Vector3.Distance(player.transform.position, transform.position) < 2 )
 			{
                 agent.isStopped = true;
                 anim.SetTrigger("Attack");
-                //attackScript.attacking = true;
-                //StartCoroutine(AttackCooldown(2f));
+                m_audioSource.panStereo = 1f;
+                m_audioSource.pitch = 1f;
+                m_audioSource.PlayOneShot(m_audioClip);
                 anim.SetBool("isIdle", true);
 
             }
@@ -76,22 +86,5 @@ public class chase : MonoBehaviour {
 		}
 
 	}
-
-
-
-    IEnumerator AttackCooldown(float coolDown)
-    {
-        float time;
-        time = Time.deltaTime;
-        hitBox.enabled = true;
-
-        while (coolDown > time)
-        {
-            time += Time.deltaTime;
-            yield return 0;
-        }
-
-        hitBox.enabled = false;
-    }
 
 }

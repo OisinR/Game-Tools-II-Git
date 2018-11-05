@@ -193,7 +193,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.32117164
+        functionName: MakeFootprint
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 8659f501bdbeec54b84dd9f14948cc2c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.8435252
+        functionName: MakeFootprint
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 8659f501bdbeec54b84dd9f14948cc2c,
+          type: 3}
+        floatParameter: 0
+        intParameter: -1
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
