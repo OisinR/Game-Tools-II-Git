@@ -25,19 +25,6 @@ public class camMouseLook : MonoBehaviour
 
     void LateUpdate()
     {
-        /*
-        var md = new Vector3(Input.GetAxisRaw("Mouse X"), 0, Input.GetAxisRaw("Mouse Y"));
- 
-        md = Vector2.Scale(md, new Vector2(sensitivity * smoothing, sensitivity * smoothing));
-        smoothV.x = Mathf.Lerp(smoothV.x, md.x, 1f / smoothing);
-        smoothV.y = Mathf.Lerp(smoothV.y, md.y, 1f / smoothing);
-        mouseLook += smoothV;
-  
-        //transform.rotation = Quaternion.AngleAxis(-mouseLook.y,  Vector3.right);
-        //target.transform.rotation = Quaternion.AngleAxis(mouseLook.x, target.transform.up);
-
-
-        */
 
         transform.position = target.position + currentOffset;
 

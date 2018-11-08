@@ -25,7 +25,7 @@ public class chase : MonoBehaviour {
     private AudioSource m_audioSource;
     void Start () 
 	{
-        //hitBox.enabled = false;
+
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
         rb = GetComponentInChildren<Rigidbody>();
@@ -59,9 +59,11 @@ public class chase : MonoBehaviour {
             agent.destination = player.transform.position;
             state = "Pursuing";
 
+            /*
             m_audioSource.panStereo = 1f;
             m_audioSource.pitch = 1f;
             m_audioSource.PlayOneShot(m_audioClip2);
+            */
             if (Vector3.Distance(player.transform.position, transform.position) < 2 )
 			{
                 agent.isStopped = true;
