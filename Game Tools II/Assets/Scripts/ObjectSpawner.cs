@@ -26,7 +26,7 @@ public class ObjectSpawner : MonoBehaviour {
         else
         {
             coolDown = 1;
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 10)
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length/2 <= objectPooler.pools[0].size)
             {
                 ToPool();
                 

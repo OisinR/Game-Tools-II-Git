@@ -17,6 +17,9 @@ public class detectHit : MonoBehaviour {
     private NavMeshAgent pAgent;
     private Vector3 death;
     private bool isNPC;
+
+    public bool clickykilly;
+
     void Start()
     {
         pAgent = GetComponent<NavMeshAgent>();
@@ -40,7 +43,7 @@ public class detectHit : MonoBehaviour {
     {
         //Debug.Log(transform.position.y);
         
-        if (healthbar <= 0 && !pDead)
+        if ((healthbar <= 0 && !pDead) | clickykilly)
         {
             if (isNPC)
             {

@@ -15,7 +15,7 @@ public class ObjectPooler : MonoBehaviour
     }
     public static ObjectPooler Instance;
 
-    [SerializeField] List<Pool> pools;
+    public List<Pool> pools;
 
     Dictionary<string, Queue<GameObject>> poolsDictionaray;
 
@@ -58,6 +58,11 @@ public class ObjectPooler : MonoBehaviour
             return null;
         }
         GameObject go = poolsDictionaray[tag].Dequeue();
+        if (go.GetComponent<Rigidbody>() !=null)
+        {
+            poolsDictionaray[tag].Enqueue(go);
+            return go;
+        }
         go.SetActive(true);
         go.transform.position = position;
         go.transform.rotation = rotation;
