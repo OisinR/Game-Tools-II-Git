@@ -7,15 +7,16 @@ public class detectHit : MonoBehaviour {
 
 	public float healthbar = 100;
 	Animator anim;
+    NPC npc;
 	public string opponent;
-    private bool pDead;
+    public bool pDead;
     private Rigidbody pRb;
     private chase pChase;
     private Collider pCol;
     public Collider hitbox;
     private NavMeshAgent pAgent;
     private Vector3 death;
-
+    private bool isNPC;
     void Start()
     {
         pAgent = GetComponent<NavMeshAgent>();
@@ -23,6 +24,11 @@ public class detectHit : MonoBehaviour {
         pChase = GetComponent<chase>();
         pCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
+        if(GetComponent<NPC>() != null)
+        {
+            npc = GetComponent<NPC>();
+            isNPC = true;
+        }
     }
 
     private void Update()
@@ -36,15 +42,17 @@ public class detectHit : MonoBehaviour {
         
         if (healthbar <= 0 && !pDead)
         {
-            
+            if (isNPC)
+            {
+                npc.dead = true;
+            }
             anim.SetTrigger("Dead");
             pDead = true;
-            Destroy(hitbox);
-            Destroy(pRb);
-            Destroy(pChase);
-            Destroy(pCol);
-            Destroy(pAgent);
-            transform.position = new Vector3(transform.position.x, death.y,transform.position.z);
+            hitbox.enabled = false;
+            pRb.detectCollisions = false;
+            pCol.enabled = false;
+            //pAgent.enabled = false;
+            //transform.position = new Vector3(transform.position.x, death.y,transform.position.z);
         }
     }
 

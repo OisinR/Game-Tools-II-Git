@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviour, Ipoolable
 {
 
     private enum NPCstate { chase, patrol, attack };
@@ -12,36 +12,63 @@ public class NPC : MonoBehaviour
     private int pCurrentWaypoint;
     private bool pIsPlayerNear;
     public Animator pAnim;
-    private bool dead;
+    public bool dead;
+    public bool readyToRespawn;
+    private float removedFromScene = 2f;
+    private float deathTimer = 3f;
 
+    private Collider pCol;
+
+    detectHit detectHit;
+
+    private Rigidbody pRb;
     //[SerializeField] Manager pManager;
+    [SerializeField] Collider hitbox;
     [SerializeField] float pFieldOfView;
     [SerializeField] float pThresholdDistance;
     [SerializeField] Transform[] Waypoints;
     private GameObject player;
 
-    void OnObjectPooled()
+    public void OnObjectPooled()
     {
-
-    }
-
-    public void Awake()
-    {
+        dead = false;
+        detectHit = GetComponent<detectHit>();
+        pRb = GetComponent<Rigidbody>();
+        pCol = GetComponent<Collider>();
+        pAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         pAnim = GetComponent<Animator>();
+        detectHit.pDead = false;
+        detectHit.healthbar = 100;
+        hitbox.enabled = true;
+        pRb.detectCollisions = true;
+        pCol.enabled = true;
+        pAgent.enabled = true;
+        removedFromScene = 2f;
+        deathTimer = 3f;
         pNPCState = NPCstate.chase;
-        pAgent = GetComponent<NavMeshAgent>();
         pCurrentWaypoint = 0;
         pAgent.updatePosition = false;
         pAgent.updateRotation = true;
         HandleAnimation();
     }
 
+
     void Update()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        if (dead) { return; }
-        //Debug.Log(pIsPlayerNear);
+        if (dead)
+        {
+            if (deathTimer > 0)
+            {
+                deathTimer -= Time.deltaTime;
+            }
+            else
+            {
+                transform.Translate(Vector3.down * Time.deltaTime, Space.World);
+                
+            }
+            return;
+        }
         if (pAgent != null) { pAgent.nextPosition = transform.position; }
         CheckPlayer();
         switch (pNPCState)
@@ -64,7 +91,6 @@ public class NPC : MonoBehaviour
     {
         if (Vector3.Distance(player.transform.position, transform.position) < 5 && CheckFieldOfView() && CheckOclusion() && pNPCState == NPCstate.chase)
         {
-            Debug.Log("yuppa");
             pNPCState = NPCstate.attack;
             HandleAnimation();
             return;
@@ -80,14 +106,12 @@ public class NPC : MonoBehaviour
 
     private void Chase()
     {
-        Debug.Log("Chasing");
         if (pAgent != null) { pAgent.SetDestination(player.transform.position); }
 
     }
 
     void Attack()
     {
-        Debug.Log("Attacking");
 
     }
 
@@ -122,7 +146,6 @@ public class NPC : MonoBehaviour
 
     private void Patrol()
     {
-        Debug.Log("Patrolling");
         //CheckWaypointDistance();
         //pAgent.SetDestination(Waypoints[pCurrentWaypoint].position);
     }
@@ -137,11 +160,9 @@ public class NPC : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("In sphere");
         if (other.tag == "Player" && CheckFieldOfView())
         {
             pIsPlayerNear = true;
-            Debug.Log("In sphere true");
         }
     }
 

@@ -8,9 +8,29 @@ public class ObjectSpawner : MonoBehaviour {
 
     ObjectPooler objectPooler;
 
+
+    float coolDown = 1;
+
     private void Start()
     {
         objectPooler = ObjectPooler.Instance;
+    }
+
+    private void FixedUpdate()
+    {
+        if (coolDown > 0)
+        {
+            coolDown -= Time.deltaTime;
+        }
+        else
+        {
+            coolDown = 1;
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length <= 10)
+            {
+                ToPool();
+                
+            }
+        }
     }
 
     private void ToPool()
