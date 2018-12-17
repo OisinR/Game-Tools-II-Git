@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class NPC : MonoBehaviour
 {
 
-    private enum NPCstate { chase, patrol };
+    private enum NPCstate { chase, patrol, attack };
     private NPCstate pNPCState;
     private NavMeshAgent pAgent;
     private int pCurrentWaypoint;
@@ -21,8 +21,8 @@ public class NPC : MonoBehaviour
 
     void Start()
     {
-        //pAnim = GetComponentInChildren<Animator>();
-        pNPCState = NPCstate.patrol;
+        pAnim = GetComponent<Animator>();
+        pNPCState = NPCstate.chase;
         pAgent = GetComponent<NavMeshAgent>();
         pCurrentWaypoint = 0;
         pAgent.updatePosition = false;
@@ -32,6 +32,7 @@ public class NPC : MonoBehaviour
 
     void Update()
     {
+        //Debug.Log(pIsPlayerNear);
         pAgent.nextPosition = transform.position;
         CheckPlayer();
         switch (pNPCState)
@@ -42,6 +43,9 @@ public class NPC : MonoBehaviour
             case NPCstate.patrol:
                 Patrol();
                 break;
+            case NPCstate.attack:
+                Attack();
+                break;
             default:
                 break;
         }
@@ -49,23 +53,33 @@ public class NPC : MonoBehaviour
 
     void CheckPlayer()
     {
-        if (pIsPlayerNear && CheckFieldOfView() && CheckOclusion() && pNPCState == NPCstate.patrol)
+        if (Vector3.Distance(player.transform.position, transform.position) < 5 && CheckFieldOfView() && CheckOclusion() && pNPCState == NPCstate.chase)
         {
-            pNPCState = NPCstate.chase;
+            Debug.Log("yuppa");
+            pNPCState = NPCstate.attack;
             HandleAnimation();
             return;
         }
-        if (pNPCState == NPCstate.chase && !CheckOclusion())
+        
+        if (pNPCState == NPCstate.attack && !CheckOclusion())
         {
-            pNPCState = NPCstate.patrol;
+            pNPCState = NPCstate.chase;
             HandleAnimation();
         }
+        
     }
 
     private void Chase()
     {
         Debug.Log("Chasing");
         pAgent.SetDestination(player.transform.position);
+
+    }
+
+    void Attack()
+    {
+        Debug.Log("Attacking");
+
     }
 
     private bool CheckFieldOfView()
@@ -114,9 +128,11 @@ public class NPC : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("In sphere");
         if (other.tag == "Player" && CheckFieldOfView())
         {
             pIsPlayerNear = true;
+            Debug.Log("In sphere true");
         }
     }
 
@@ -157,11 +173,18 @@ public class NPC : MonoBehaviour
         pAgent.nextPosition = transform.position;
         if (pNPCState == NPCstate.chase)
         {
+            pAnim.SetBool("Attack", false);
             pAnim.SetFloat("Forward", 2);
         }
         else
         {
+            pAnim.SetBool("Attack", false);
             pAnim.SetFloat("Forward", 1);
+        }
+        if(pNPCState == NPCstate.attack)
+        {
+            pAnim.SetFloat("Forward", 0);
+            pAnim.SetBool("Attack", true);
         }
     }
 }
