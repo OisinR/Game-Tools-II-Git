@@ -12,6 +12,7 @@ public class NPC : MonoBehaviour
     private int pCurrentWaypoint;
     private bool pIsPlayerNear;
     public Animator pAnim;
+    private bool dead;
 
     //[SerializeField] Manager pManager;
     [SerializeField] float pFieldOfView;
@@ -32,8 +33,9 @@ public class NPC : MonoBehaviour
 
     void Update()
     {
+        if (dead) { return; }
         //Debug.Log(pIsPlayerNear);
-        pAgent.nextPosition = transform.position;
+        if (pAgent != null) { pAgent.nextPosition = transform.position; }
         CheckPlayer();
         switch (pNPCState)
         {
@@ -72,7 +74,7 @@ public class NPC : MonoBehaviour
     private void Chase()
     {
         Debug.Log("Chasing");
-        pAgent.SetDestination(player.transform.position);
+        if (pAgent != null) { pAgent.SetDestination(player.transform.position); }
 
     }
 
@@ -187,4 +189,6 @@ public class NPC : MonoBehaviour
             pAnim.SetBool("Attack", true);
         }
     }
+
+
 }

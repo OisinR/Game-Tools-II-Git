@@ -74,10 +74,10 @@ public class Char : MonoBehaviour
         }
         if (attack)
         {
-            panim.SetTrigger("Attack");
 
             if (!attacking)
             {
+                panim.SetTrigger("Attack");
                 attacking = true;
                 attackTimer = attackCoolDown;
                 m_audioSource.panStereo = 1f;

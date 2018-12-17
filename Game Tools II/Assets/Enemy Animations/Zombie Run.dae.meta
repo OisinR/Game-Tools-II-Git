@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f1673918040389742a72a1e866d456e9
+guid: 6468dfc2bbc60d047b0174bc8da7b2af
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -127,7 +127,7 @@ ModelImporter:
     400118: Spine1
     400120: Spine2
     400122: //RootNode
-    7400000: Death
+    7400000: Run
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -158,17 +158,17 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Death
+      name: Run
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 89
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 1
