@@ -18,10 +18,16 @@ public class NPC : MonoBehaviour
     [SerializeField] float pFieldOfView;
     [SerializeField] float pThresholdDistance;
     [SerializeField] Transform[] Waypoints;
-    [SerializeField] GameObject player;
+    private GameObject player;
 
-    void Start()
+    void OnObjectPooled()
     {
+
+    }
+
+    public void Awake()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
         pAnim = GetComponent<Animator>();
         pNPCState = NPCstate.chase;
         pAgent = GetComponent<NavMeshAgent>();
@@ -33,6 +39,7 @@ public class NPC : MonoBehaviour
 
     void Update()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         if (dead) { return; }
         //Debug.Log(pIsPlayerNear);
         if (pAgent != null) { pAgent.nextPosition = transform.position; }
@@ -160,8 +167,11 @@ public class NPC : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, 5.0f);
 
         Gizmos.color = Color.red;
-        Vector3 direction = player.transform.position - transform.position;
-        Gizmos.DrawRay(transform.position, direction);
+        if (player != null)
+        {
+            Vector3 direction = player.transform.position - transform.position;
+            Gizmos.DrawRay(transform.position, direction);
+        }
 
         Vector3 rightDirection = Quaternion.AngleAxis(pFieldOfView / 2, Vector3.up) * transform.forward;
         Vector3 leftDirection = Quaternion.AngleAxis(-pFieldOfView / 2, Vector3.up) * transform.forward;
