@@ -8,6 +8,7 @@ public class ObjectSpawner : MonoBehaviour {
 
     ObjectPooler objectPooler;
 
+    [SerializeField] GameObject[] spawnpoints;
 
     float coolDown = 1;
 
@@ -35,6 +36,6 @@ public class ObjectSpawner : MonoBehaviour {
 
     private void ToPool()
     {
-        objectPooler.SpawnFromPool(tag[0], transform.position, transform.rotation);
+        objectPooler.SpawnFromPool(tag[0], spawnpoints[Random.Range(0,spawnpoints.Length)].transform.position, transform.rotation);
     }
 }

@@ -49,10 +49,9 @@ public class detectHit : MonoBehaviour {
             anim.SetTrigger("Dead");
             pDead = true;
             hitbox.enabled = false;
-            pRb.detectCollisions = false;
+            Destroy(pRb);
             pCol.enabled = false;
-            //pAgent.enabled = false;
-            //transform.position = new Vector3(transform.position.x, death.y,transform.position.z);
+            pAgent.enabled = false;
         }
     }
 

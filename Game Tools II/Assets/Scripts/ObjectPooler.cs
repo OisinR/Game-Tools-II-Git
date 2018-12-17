@@ -62,6 +62,9 @@ public class ObjectPooler : MonoBehaviour
         go.transform.position = position;
         go.transform.rotation = rotation;
 
+        Rigidbody pRb = go.AddComponent<Rigidbody>();
+        pRb.constraints = RigidbodyConstraints.FreezeRotation;
+
         poolsDictionaray[tag].Enqueue(go);
         Ipoolable objectToPool = go.GetComponent<Ipoolable>();
         objectToPool.OnObjectPooled();

@@ -28,12 +28,16 @@ public class NPC : MonoBehaviour, Ipoolable
     [SerializeField] float pThresholdDistance;
     [SerializeField] Transform[] Waypoints;
     private GameObject player;
+    private GameObject Enemy;
+    void Awake()
+    {
+        OnObjectPooled();
+    }
 
     public void OnObjectPooled()
     {
         dead = false;
         detectHit = GetComponent<detectHit>();
-        pRb = GetComponent<Rigidbody>();
         pCol = GetComponent<Collider>();
         pAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
@@ -41,7 +45,6 @@ public class NPC : MonoBehaviour, Ipoolable
         detectHit.pDead = false;
         detectHit.healthbar = 100;
         hitbox.enabled = true;
-        pRb.detectCollisions = true;
         pCol.enabled = true;
         pAgent.enabled = true;
         removedFromScene = 2f;
@@ -65,7 +68,14 @@ public class NPC : MonoBehaviour, Ipoolable
             else
             {
                 transform.Translate(Vector3.down * Time.deltaTime, Space.World);
-                
+                if (removedFromScene > 0)
+                {
+                    removedFromScene -= Time.deltaTime;
+                }
+                else
+                {
+                    gameObject.SetActive(false);
+                }
             }
             return;
         }
