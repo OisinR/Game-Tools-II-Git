@@ -18,11 +18,13 @@ public class detectHit : MonoBehaviour {
     private NavMeshAgent pAgent;
     private bool isNPC;
 
+    Score score;
+
     public bool clickykilly;
 
     [SerializeField] List<AudioClip> deathMoans = new List<AudioClip>();
 
-    AudioSource speaker;
+    public AudioSource speaker;
 
     private void Start()
     {
@@ -32,7 +34,7 @@ public class detectHit : MonoBehaviour {
 
     void GetComponents()
     {
-        speaker = GetComponent<AudioSource>();
+        score = GameObject.FindGameObjectWithTag("Manager").GetComponent<Score>();
         pAgent = GetComponent<NavMeshAgent>();
         pRb = GetComponent<Rigidbody>();
         pChase = GetComponent<chase>();
@@ -54,6 +56,7 @@ public class detectHit : MonoBehaviour {
             {
                 npc.dead = true;
             }
+            anim.SetLayerWeight(1,0); 
             anim.SetTrigger("Dead");
             speaker.pitch = Random.Range(0.5f, 1.0f);
             speaker.PlayOneShot(deathMoans[Random.Range(0, 2)]);
@@ -63,7 +66,7 @@ public class detectHit : MonoBehaviour {
             pCol.enabled = false;
             pAgent.enabled = false;
             healthbar = 100;
-
+            score.AddScore();
         }
     }
 

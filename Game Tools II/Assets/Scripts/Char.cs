@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Char : MonoBehaviour
 {
@@ -11,7 +12,10 @@ public class Char : MonoBehaviour
     public AudioClip m_audioClip;
     public AudioClip m_audioClip2;
     private AudioSource m_audioSource;
+    playerHealth playerHealth;
+    [SerializeField] float secondWind = 3;
 
+    public Text secondWindText;
     public bool attacking = false;
     private float attackTimer = 0;
     private float attackswing = 0;
@@ -26,6 +30,8 @@ public class Char : MonoBehaviour
     }
     void Start ()
     {
+        secondWindText = GameObject.FindGameObjectWithTag("SecondWind").GetComponent<Text>();
+        playerHealth = GetComponent<playerHealth>();
         panim = GetComponentInChildren<Animator>();
         pRb = GetComponent<Rigidbody>();
         m_audioSource = GetComponent<AudioSource>();
@@ -33,6 +39,7 @@ public class Char : MonoBehaviour
 
     private void Update()
     {
+        if(playerHealth.healthBar.value <= 0) { panim.SetLayerWeight(1, 0); CantKill(); return; }
         pForward = Input.GetAxis("Vertical") * moveSpeed;
         pStrafe = Input.GetAxis("Horizontal") * moveSpeed;
         Vector3 velocity = pRb.velocity;
@@ -118,14 +125,17 @@ public class Char : MonoBehaviour
 
             }
         }
-        if(roar &&  counter<=0)
+        if(roar &&  counter<=0 && secondWind != 0)
         {
-            float coolDown = 3f;
+            float coolDown = 2.5f;
             counter = coolDown;
             panim.SetTrigger("Roar");
             m_audioSource.panStereo = 1f;
             m_audioSource.pitch = 1f;
             m_audioSource.PlayOneShot(m_audioClip);
+            playerHealth.healthBar.value += 300;
+            secondWind--;
+            secondWindText.text = "Second Wind: " + secondWind;
         }
         counter -= Time.deltaTime;
 

@@ -52,6 +52,8 @@ public class NPC : MonoBehaviour, Ipoolable
         pRb = GetComponent<Rigidbody>();
         navMeshFix = GetComponent<Navmeshfix>();
 
+
+        pAnim.SetLayerWeight(1, 1);
         removedFromScene = 2f;
         deathTimer = 3f;
         pNPCState = NPCstate.chase;
@@ -110,14 +112,14 @@ public class NPC : MonoBehaviour, Ipoolable
 
     void CheckPlayer()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < 5 && CheckFieldOfView() && CheckOclusion() && pNPCState == NPCstate.chase)
+        if (Vector3.Distance(player.transform.position, transform.position) < 1f  && pNPCState == NPCstate.chase)
         {
             pNPCState = NPCstate.attack;
             HandleAnimation();
             return;
         }
         
-        if (pNPCState == NPCstate.attack && !CheckOclusion())
+        if (Vector3.Distance(player.transform.position, transform.position) > 1.2f && pNPCState == NPCstate.attack)
         {
             pNPCState = NPCstate.chase;
             HandleAnimation();
@@ -128,12 +130,14 @@ public class NPC : MonoBehaviour, Ipoolable
     private void Chase()
     {
         if (pAgent != null) { pAgent.SetDestination(player.transform.position); }
-
+        pAnim.applyRootMotion = true;
+        pAnim.SetBool("Attack", false);
     }
 
     void Attack()
     {
-
+        pAnim.applyRootMotion = false;
+        pAnim.SetBool("Attack", true);
     }
 
     private bool CheckFieldOfView()

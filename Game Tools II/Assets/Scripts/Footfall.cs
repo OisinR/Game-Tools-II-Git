@@ -18,11 +18,14 @@ public class Footfall : MonoBehaviour {
 
     private void Start()
     {
-        m_animator = GetComponent<Animator>();
-        m_audioSource = GetComponent<AudioSource>();
+        if (GetComponent<Animator>())
+        {
+            m_animator = GetComponent<Animator>();
 
-        m_rightFootTransform = m_animator.GetBoneTransform(HumanBodyBones.RightFoot);
-        m_leftFootTransform = m_animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+            m_rightFootTransform = m_animator.GetBoneTransform(HumanBodyBones.RightFoot);
+            m_leftFootTransform = m_animator.GetBoneTransform(HumanBodyBones.LeftFoot);
+        }
+        m_audioSource = GetComponent<AudioSource>();
     }
 
     public void MakeFootprint(int scale)
@@ -52,12 +55,14 @@ public class Footfall : MonoBehaviour {
         {
             if (footDirection == Direction.left)
             {
+
                 m_audioSource.panStereo = -0.05f;
                 m_audioSource.pitch = Random.Range(0.5f, 1.0f);
             }
 
             if (footDirection == Direction.right)
             {
+
                 m_audioSource.panStereo = +0.05f;
                 m_audioSource.pitch = Random.Range(1.5f, 2.0f);
             }

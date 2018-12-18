@@ -6,12 +6,13 @@ public class ZombieSounds : MonoBehaviour {
 
 
     [SerializeField] List<AudioClip> zombieMoans = new List<AudioClip>();
-    private AudioSource speaker;
+    AudioSource speaker;
     private float cooldown;
 
 	void Start () {
         speaker = GetComponent<AudioSource>();
         cooldown = Random.Range(5, 20);
+        
     }
 	
 
