@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6b4fe660b291d244e949d5642e418933
+guid: 64e7c996ca1c7d1409ebefeaa8949ef0
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
@@ -139,7 +139,7 @@ ModelImporter:
     400130: Spine2
     400132: //RootNode
     400134: Sword_joint
-    7400000: Slash2
+    7400000: Slash
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -170,10 +170,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Slash2
+      name: Slash
       takeName: Take 001
       firstFrame: 0
-      lastFrame: 50
+      lastFrame: 45
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -182,7 +182,7 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
+      loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
@@ -192,7 +192,23 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.17213115
+        functionName: CanKill
+        data: 
+        objectReferenceParameter: {fileID: 1643489877824838, guid: c2e63655761303b4c8ee3181d62524b2,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: CantKill
+        data: 
+        objectReferenceParameter: {fileID: 1643489877824838, guid: c2e63655761303b4c8ee3181d62524b2,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

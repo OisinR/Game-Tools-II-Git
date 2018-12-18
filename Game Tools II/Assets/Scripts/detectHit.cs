@@ -15,7 +15,6 @@ public class detectHit : MonoBehaviour {
     private Collider pCol;
     public Collider hitbox;
     private NavMeshAgent pAgent;
-    private Vector3 death;
     private bool isNPC;
 
     public bool clickykilly;
@@ -43,9 +42,7 @@ public class detectHit : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        //Debug.Log(transform.position.y);
-
-        if ((healthbar <= 0) | clickykilly)
+        if ((healthbar < 1 && !pDead) | clickykilly)
         {
             GetComponents();
             if (isNPC)
@@ -59,6 +56,7 @@ public class detectHit : MonoBehaviour {
             pCol.enabled = false;
             pAgent.enabled = false;
             healthbar = 100;
+
         }
     }
 

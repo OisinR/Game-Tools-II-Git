@@ -68,6 +68,7 @@ public class ObjectPooler : MonoBehaviour
         go.transform.rotation = rotation;
 
         Rigidbody pRb = go.AddComponent<Rigidbody>();
+        go.GetComponent<detectHit>().pDead = false;
         pRb.constraints = RigidbodyConstraints.FreezeRotation;
 
         poolsDictionaray[tag].Enqueue(go);

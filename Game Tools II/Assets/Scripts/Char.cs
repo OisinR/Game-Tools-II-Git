@@ -14,7 +14,9 @@ public class Char : MonoBehaviour
 
     public bool attacking = false;
     private float attackTimer = 0;
-    public float attackCoolDown = 0.3f;
+    private float attackswing = 0;
+    private float attackSwingCooldown;
+    private float attackCoolDown = 1f;
     public Collider attackTrigger;
 
 
@@ -55,11 +57,26 @@ public class Char : MonoBehaviour
             else
             {
                 attacking = false;
-                attackTrigger.enabled = false;
+                
             }
         }
         
     }
+
+
+    public void CanKill()
+    {
+        m_audioSource.panStereo = 1f;
+        m_audioSource.pitch = 1f;
+        m_audioSource.PlayOneShot(m_audioClip2);
+        attackTrigger.enabled = true;
+    }
+
+    public void CantKill()
+    {
+        attackTrigger.enabled = false;
+    }
+
 
     float counter;
 
@@ -88,10 +105,7 @@ public class Char : MonoBehaviour
                 }
                 attacking = true;
                 attackTimer = attackCoolDown;
-                m_audioSource.panStereo = 1f;
-                m_audioSource.pitch = 1f;
-                m_audioSource.PlayOneShot(m_audioClip2);
-                attackTrigger.enabled = true;
+
             }
         }
         if(roar &&  counter<=0)
