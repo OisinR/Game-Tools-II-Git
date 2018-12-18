@@ -2,6 +2,7 @@
 using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class detectHit : MonoBehaviour {
 
@@ -19,6 +20,9 @@ public class detectHit : MonoBehaviour {
 
     public bool clickykilly;
 
+    [SerializeField] List<AudioClip> deathMoans = new List<AudioClip>();
+
+    AudioSource speaker;
 
     private void Start()
     {
@@ -28,6 +32,7 @@ public class detectHit : MonoBehaviour {
 
     void GetComponents()
     {
+        speaker = GetComponent<AudioSource>();
         pAgent = GetComponent<NavMeshAgent>();
         pRb = GetComponent<Rigidbody>();
         pChase = GetComponent<chase>();
@@ -50,6 +55,8 @@ public class detectHit : MonoBehaviour {
                 npc.dead = true;
             }
             anim.SetTrigger("Dead");
+            speaker.pitch = Random.Range(0.5f, 1.0f);
+            speaker.PlayOneShot(deathMoans[Random.Range(0, 2)]);
             pDead = true;
             hitbox.enabled = false;
             Destroy(pRb);
