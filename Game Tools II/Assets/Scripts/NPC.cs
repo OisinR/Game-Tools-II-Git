@@ -50,13 +50,13 @@ public class NPC : MonoBehaviour, Ipoolable
         pAnim = GetComponent<Animator>();
         pAgent = GetComponent<NavMeshAgent>();
         pRb = GetComponent<Rigidbody>();
-        pCol = GetComponent<Collider>();
         navMeshFix = GetComponent<Navmeshfix>();
 
         removedFromScene = 2f;
         deathTimer = 3f;
         pNPCState = NPCstate.chase;
         pCurrentWaypoint = 0;
+        pCol.enabled = true;
         pAgent.enabled = true;
         pAgent.updatePosition = false;
         pAgent.updateRotation = true;

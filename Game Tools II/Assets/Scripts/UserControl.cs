@@ -20,7 +20,7 @@ public class UserControl : MonoBehaviour
         pJump = Input.GetButtonDown("Jump");
         pAttack = Input.GetButtonDown("Fire1");
         pRoar = Input.GetKeyDown(KeyCode.R);
-        pRun = Input.GetKeyDown(KeyCode.LeftShift);
+        pRun = Input.GetKey(KeyCode.LeftShift);
         pChar.Move(pForward,pStrafe,pJump,pAttack,pRoar,pRun);
 	}
 }

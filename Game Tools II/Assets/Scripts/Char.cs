@@ -83,7 +83,17 @@ public class Char : MonoBehaviour
     public void Move(float forward, float strafe, bool jump, bool attack, bool roar, bool run)
     {
         panim.SetFloat("Forward", forward);
-
+        if (run)
+        {
+            panim.SetBool("Run", true);
+            moveSpeed = 2.5f;
+            return;
+        }
+        else
+        {
+            panim.SetBool("Run", false);
+            moveSpeed = 1.5f;
+        }
         panim.SetFloat("Strafe", strafe);
         if (jump)
         {
