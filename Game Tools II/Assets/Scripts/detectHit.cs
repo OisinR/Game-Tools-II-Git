@@ -20,31 +20,34 @@ public class detectHit : MonoBehaviour {
 
     public bool clickykilly;
 
-    void Start()
+
+    private void Start()
+    {
+        GetComponents();
+    }
+
+
+    void GetComponents()
     {
         pAgent = GetComponent<NavMeshAgent>();
         pRb = GetComponent<Rigidbody>();
         pChase = GetComponent<chase>();
         pCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
-        if(GetComponent<NPC>() != null)
+        if (GetComponent<NPC>() != null)
         {
             npc = GetComponent<NPC>();
             isNPC = true;
         }
     }
 
-    private void Update()
-    {
-        death = gameObject.transform.position;
-    }
-
     private void FixedUpdate()
     {
         //Debug.Log(transform.position.y);
-        
-        if ((healthbar <= 0 && !pDead) | clickykilly)
+
+        if ((healthbar <= 0) | clickykilly)
         {
+            GetComponents();
             if (isNPC)
             {
                 npc.dead = true;
@@ -55,6 +58,7 @@ public class detectHit : MonoBehaviour {
             Destroy(pRb);
             pCol.enabled = false;
             pAgent.enabled = false;
+            healthbar = 100;
         }
     }
 

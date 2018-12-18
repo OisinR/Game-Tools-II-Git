@@ -6,6 +6,14 @@ public class Navmeshfix : MonoBehaviour {
 
     void Start()
     {
+        FindNavMesh();
+    }
+
+
+
+
+    public void FindNavMesh()
+    {
         NavMeshHit closestHit;
 
         if (NavMesh.SamplePosition(gameObject.transform.position, out closestHit, 500f, NavMesh.AllAreas))

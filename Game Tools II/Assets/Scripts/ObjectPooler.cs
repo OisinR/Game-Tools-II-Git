@@ -58,7 +58,7 @@ public class ObjectPooler : MonoBehaviour
             return null;
         }
         GameObject go = poolsDictionaray[tag].Dequeue();
-        if (go.GetComponent<Rigidbody>() !=null)
+        if (go.activeInHierarchy)
         {
             poolsDictionaray[tag].Enqueue(go);
             return go;

@@ -43,7 +43,7 @@ public class Char : MonoBehaviour
                 transform.position += transform.right * pStrafe * Time.deltaTime * moveSpeed;
             }
             transform.position += transform.forward * pForward * Time.deltaTime * moveSpeed;
-            //pRb.velocity = velocity;
+            
         }
 
         if (attacking)
@@ -63,7 +63,7 @@ public class Char : MonoBehaviour
 
     float counter;
 
-    public void Move(float forward, float strafe, bool jump, bool attack, bool roar)
+    public void Move(float forward, float strafe, bool jump, bool attack, bool roar, bool run)
     {
         panim.SetFloat("Forward", forward);
 
@@ -77,7 +77,15 @@ public class Char : MonoBehaviour
 
             if (!attacking)
             {
-                panim.SetTrigger("Attack");
+                int attackPick = Random.Range(0, 2);
+                if(attackPick == 0)
+                {
+                    panim.SetTrigger("Attack");
+                }
+                else
+                {
+                    panim.SetTrigger("Attack2");
+                }
                 attacking = true;
                 attackTimer = attackCoolDown;
                 m_audioSource.panStereo = 1f;

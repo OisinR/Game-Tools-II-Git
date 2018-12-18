@@ -14,8 +14,10 @@ public class NPC : MonoBehaviour, Ipoolable
     public Animator pAnim;
     public bool dead;
     public bool readyToRespawn;
-    private float removedFromScene = 2f;
+    private float removedFromScene;
     private float deathTimer = 3f;
+
+    public bool readyToPool;
 
     private Collider pCol;
 
@@ -29,6 +31,9 @@ public class NPC : MonoBehaviour, Ipoolable
     [SerializeField] Transform[] Waypoints;
     private GameObject player;
     private GameObject Enemy;
+
+    Navmeshfix navMeshFix;
+
     void Awake()
     {
         OnObjectPooled();
@@ -36,24 +41,27 @@ public class NPC : MonoBehaviour, Ipoolable
 
     public void OnObjectPooled()
     {
+        readyToPool = false;
         dead = false;
         detectHit = GetComponent<detectHit>();
         pCol = GetComponent<Collider>();
         pAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         pAnim = GetComponent<Animator>();
-        detectHit.pDead = false;
-        detectHit.healthbar = 100;
-        hitbox.enabled = true;
-        pCol.enabled = true;
-        pAgent.enabled = true;
+        pAgent = GetComponent<NavMeshAgent>();
+        pRb = GetComponent<Rigidbody>();
+        pCol = GetComponent<Collider>();
+        navMeshFix = GetComponent<Navmeshfix>();
+
         removedFromScene = 2f;
         deathTimer = 3f;
         pNPCState = NPCstate.chase;
         pCurrentWaypoint = 0;
+        pAgent.enabled = true;
         pAgent.updatePosition = false;
         pAgent.updateRotation = true;
         HandleAnimation();
+        
     }
 
 
@@ -75,6 +83,7 @@ public class NPC : MonoBehaviour, Ipoolable
                 else
                 {
                     gameObject.SetActive(false);
+                    readyToPool = true;
                 }
             }
             return;
@@ -96,6 +105,8 @@ public class NPC : MonoBehaviour, Ipoolable
                 break;
         }
     }
+
+
 
     void CheckPlayer()
     {

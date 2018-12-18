@@ -6,7 +6,7 @@ public class UserControl : MonoBehaviour
 {
     private float pStrafe, pForward;
     private Char pChar;
-    private bool pJump, pAttack,pRoar;
+    private bool pJump, pAttack,pRoar,pRun;
 
 	void Start ()
     {
@@ -20,6 +20,7 @@ public class UserControl : MonoBehaviour
         pJump = Input.GetButtonDown("Jump");
         pAttack = Input.GetButtonDown("Fire1");
         pRoar = Input.GetKeyDown(KeyCode.R);
-        pChar.Move(pForward,pStrafe,pJump,pAttack,pRoar);
+        pRun = Input.GetKeyDown(KeyCode.LeftShift);
+        pChar.Move(pForward,pStrafe,pJump,pAttack,pRoar,pRun);
 	}
 }
