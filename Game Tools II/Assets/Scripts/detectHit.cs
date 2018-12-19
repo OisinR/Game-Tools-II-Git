@@ -12,7 +12,6 @@ public class detectHit : MonoBehaviour {
 	public string opponent;
     public bool pDead;
     private Rigidbody pRb;
-    private chase pChase;
     private Collider pCol;
     public Collider hitbox;
     private NavMeshAgent pAgent;
@@ -44,7 +43,6 @@ public class detectHit : MonoBehaviour {
         score = GameObject.FindGameObjectWithTag("Manager").GetComponent<Score>();
         pAgent = GetComponent<NavMeshAgent>();
         pRb = GetComponent<Rigidbody>();
-        pChase = GetComponent<chase>();
         pCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
         if (GetComponent<NPC>() != null)
@@ -81,7 +79,6 @@ public class detectHit : MonoBehaviour {
 	{
 		if(other.gameObject.tag != opponent) return;
         objectPooler.SpawnFromPool(tag[0], transform.position, transform.rotation);
-        //Instantiate(blood, transform.position, Quaternion.identity);
 		healthbar -= 100;
 
 		
