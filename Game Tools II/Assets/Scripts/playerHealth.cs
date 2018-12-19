@@ -26,6 +26,7 @@ public class playerHealth : MonoBehaviour
         {
             anim.SetTrigger("Death");
             pDead = true;
+            GetComponent<camMouseLook>().enabled = false;           //stops the mouse from turning the player
         }
 
         if (hitTimer > 0)

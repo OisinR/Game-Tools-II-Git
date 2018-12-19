@@ -8,3 +8,4 @@ Attack: Left mouse button
 Sprint: Left Shift and W
 Second Wind (healing): R
 Jump: Space
+Press Escape to regain control of Mouse
