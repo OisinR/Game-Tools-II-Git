@@ -11,8 +11,7 @@ public class ZombieSounds : MonoBehaviour {
 
 	void Start () {
         speaker = GetComponent<AudioSource>();
-        cooldown = Random.Range(5, 20);
-        
+        cooldown = Random.Range(5, 20);                                             //randomly decide when to play moans, but dont spam     
     }
 	
 

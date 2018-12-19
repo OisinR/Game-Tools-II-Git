@@ -7,8 +7,9 @@ public class Blood : MonoBehaviour, Ipoolable {
     float cooldown = 3;
 
 
-	public void OnObjectPooled () {
-        gameObject.SetActive(true);
+	public void OnObjectPooled ()
+    {
+        gameObject.SetActive(true);                     //The particle system plays on awake, so this turns it on
 	}
 
 
@@ -23,7 +24,7 @@ public class Blood : MonoBehaviour, Ipoolable {
             else
             {
                 cooldown = 3;
-                gameObject.SetActive(false);
+                gameObject.SetActive(false);        //deactivates it after playing so it can be used somewhere else
             }
         }
     }

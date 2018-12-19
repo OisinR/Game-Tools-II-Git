@@ -51,14 +51,16 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject SpawnFromPool(string nameTag, Vector3 position, Quaternion rotation)
+    //above is pretty much the same from class, grabs objects and gets them in pools
+
+    public GameObject SpawnFromPool(string nameTag, Vector3 position, Quaternion rotation)                     
     {
         if (!poolsDictionaray.ContainsKey(nameTag))
         {
             return null;
         }
         GameObject go = poolsDictionaray[nameTag].Dequeue();
-        if (go.activeInHierarchy)
+        if (go.activeInHierarchy)                                                                       //if the object is already being used, skip over it
         {
             poolsDictionaray[nameTag].Enqueue(go);
             return go;
@@ -66,14 +68,12 @@ public class ObjectPooler : MonoBehaviour
         go.SetActive(true);
         go.transform.position = position;
         go.transform.rotation = rotation;
-        if (go.tag != "Blood")
+        if (go.tag != "Blood")                                                                          //if the object isnt a blood splatter, give it a rigidbody to replace the one that was destroyed on death
         {
 
             Rigidbody pRb = go.AddComponent<Rigidbody>();
-
-            go.GetComponent<detectHit>().pDead = false;
-            pRb.constraints = RigidbodyConstraints.FreezeRotation;
-
+            pRb.constraints = RigidbodyConstraints.FreezeRotation;                                      //stop the rigidbody falling all over the place
+            go.GetComponent<detectHit>().pDead = false;                                                 //tell it its not dead
         }
 
         

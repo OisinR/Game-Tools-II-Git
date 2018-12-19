@@ -5,32 +5,33 @@ using UnityEngine.UI;
 
 public class Char : MonoBehaviour
 {
-    private Rigidbody pRb;
-    private Animator panim;
-    public float moveSpeed;
-    private float pForward, pStrafe;
-    public AudioClip m_audioClip;
-    public AudioClip m_audioClip2;
-    private AudioSource m_audioSource;
+    //Private Variables
+    AudioSource m_audioSource;
     playerHealth playerHealth;
+    Rigidbody pRb;
+    Animator panim;
+    float attackTimer = 0;
+    float attackCoolDown = 1f;
+    float pForward, pStrafe;
+
     [SerializeField] float secondWind = 3;
 
+    //Public Variables
+    public AudioClip m_audioClip;
+    public AudioClip m_audioClip2;
+    public float moveSpeed;
     public Text secondWindText;
     public bool attacking = false;
-    private float attackTimer = 0;
-    private float attackswing = 0;
-    private float attackSwingCooldown;
-    private float attackCoolDown = 1f;
     public Collider attackTrigger;
 
 
     void Awake()
     {
-        attackTrigger.enabled = false;
+        attackTrigger.enabled = false;                                                                                      //make sure the sword kill box is off
     }
     void Start ()
     {
-        secondWindText = GameObject.FindGameObjectWithTag("SecondWind").GetComponent<Text>();
+        secondWindText = GameObject.FindGameObjectWithTag("SecondWind").GetComponent<Text>();                               //grab the components needed
         playerHealth = GetComponent<playerHealth>();
         panim = GetComponentInChildren<Animator>();
         pRb = GetComponent<Rigidbody>();
@@ -39,8 +40,9 @@ public class Char : MonoBehaviour
 
     private void Update()
     {
-        if(playerHealth.healthBar.value <= 0) { panim.SetLayerWeight(1, 0); CantKill(); return; }
-        pForward = Input.GetAxis("Vertical") * moveSpeed;
+        if(playerHealth.healthBar.value <= 0) { panim.SetLayerWeight(1, 0); CantKill(); return; }                           //if the player dies, turn off the sword killbox and animation
+
+        pForward = Input.GetAxis("Vertical") * moveSpeed;                                                                   //basic movement
         pStrafe = Input.GetAxis("Horizontal") * moveSpeed;
         Vector3 velocity = pRb.velocity;
 
@@ -55,7 +57,7 @@ public class Char : MonoBehaviour
             
         }
 
-        if (attacking)
+        if (attacking)                                                                                                      //stops the player spamming attacks before the animation is done
         {
             if (attackTimer > 0)
             {
@@ -71,7 +73,7 @@ public class Char : MonoBehaviour
     }
 
 
-    public void CanKill()
+    public void CanKill()                                                                                                       //activated by animation event, turns on sword killbox and plays sound
     {
         m_audioSource.panStereo = 1f;
         m_audioSource.pitch = 1f;
@@ -79,15 +81,15 @@ public class Char : MonoBehaviour
         attackTrigger.enabled = true;
     }
 
-    public void CantKill()
-    {
+    public void CantKill()                                                                                                      //activated by animation event, turns off kill box on sword
+    {   
         attackTrigger.enabled = false;
     }
 
 
     float counter;
 
-    public void Move(float forward, float strafe, bool jump, bool attack, bool roar, bool run)
+    public void Move(float forward, float strafe, bool jump, bool attack, bool roar, bool run)                                  //input and movement
     {
         panim.SetFloat("Forward", forward);
         if (run)
@@ -125,7 +127,7 @@ public class Char : MonoBehaviour
 
             }
         }
-        if(roar &&  counter<=0 && secondWind != 0)
+        if(roar &&  counter<=0 && secondWind != 0)                                                                                      //checks to see if you have any second winds left and you arent already doing it.
         {
             float coolDown = 2.5f;
             counter = coolDown;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectSpawner : MonoBehaviour {
 
-    [SerializeField] string[] tag;
+    [SerializeField] string[] tagg;                                                                         //changed to two g's to stop the warning message
 
     ObjectPooler objectPooler;
 
@@ -26,7 +26,7 @@ public class ObjectSpawner : MonoBehaviour {
         else
         {
             coolDown = 1;
-            if (GameObject.FindGameObjectsWithTag("Enemy").Length/2 <= objectPooler.pools[0].size)
+            if (GameObject.FindGameObjectsWithTag("Enemy").Length/2 <= objectPooler.pools[0].size)                      //Enemy is tagged on two parts of each zombie, so this spawns the right amount
             {
                 ToPool();
                 
@@ -36,6 +36,6 @@ public class ObjectSpawner : MonoBehaviour {
 
     private void ToPool()
     {
-        objectPooler.SpawnFromPool(tag[0], spawnpoints[Random.Range(0,spawnpoints.Length)].transform.position, transform.rotation);
+        objectPooler.SpawnFromPool(tagg[0], spawnpoints[Random.Range(0,spawnpoints.Length)].transform.position, transform.rotation);             //spawns the enemies from the spawnpoints at random
     }
 }

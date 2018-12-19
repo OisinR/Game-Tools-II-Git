@@ -6,30 +6,26 @@ using System.Collections.Generic;
 
 public class detectHit : MonoBehaviour {
 
-	public float healthbar = 100;
-	Animator anim;
-    NPC npc;
-	public string opponent;
-    public bool pDead;
-    private Rigidbody pRb;
-    private Collider pCol;
-    public Collider hitbox;
-    private NavMeshAgent pAgent;
-    private bool isNPC;
 
-    public GameObject blood;
-
-    ObjectPooler objectPooler;
-    [SerializeField] string[] tag;
-
-
+    //Private Variables
     Score score;
-
-    public bool clickykilly;
-
+    Animator anim;
+    NPC npc;
+    Rigidbody pRb;
+    Collider pCol;
+    NavMeshAgent pAgent;
+    bool isNPC;
+    ObjectPooler objectPooler;
+    [SerializeField] string[] tagg;
     [SerializeField] List<AudioClip> deathMoans = new List<AudioClip>();
 
+    //Public Variables
+    public float healthbar = 100;
+    public string opponent;
+    public bool pDead;
+    public Collider hitbox;
     public AudioSource speaker;
+
 
     private void Start()
     {
@@ -54,31 +50,31 @@ public class detectHit : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        if ((healthbar < 1 && !pDead) | clickykilly)
+        if ((healthbar < 1 && !pDead))
         {
-            GetComponents();
+            GetComponents();                                                        //re-gets components every time its spawned
             if (isNPC)
             {
                 npc.dead = true;
             }
-            anim.SetLayerWeight(1,0); 
-            anim.SetTrigger("Dead");
-            speaker.pitch = Random.Range(0.5f, 1.0f);
+            anim.SetLayerWeight(1,0);                                                               //stops zombie swinging if it died mid attack
+            anim.SetTrigger("Dead");                
+            speaker.pitch = Random.Range(0.5f, 1.0f);                                                   //gives random pitch and chooses from one of the death moans
             speaker.PlayOneShot(deathMoans[Random.Range(0, 2)]);
-            pDead = true;
+            pDead = true;                                                                       //disables most of the components so the dead body doesnt interfear with anything
             hitbox.enabled = false;
-            Destroy(pRb);
+            Destroy(pRb);                                                                       //in order to sink through the floor, the rigidbody has to go
             pCol.enabled = false;
             pAgent.enabled = false;
-            healthbar = 100;
-            score.AddScore();
+            healthbar = 100;                                                                    //reset health bar for next spawn
+            score.AddScore();                                                                   //add to the score
         }
     }
 
     void OnTriggerEnter(Collider other)
-	{
+	{                                                                                           //if attacked by the player, spawn in some blood
 		if(other.gameObject.tag != opponent) return;
-        objectPooler.SpawnFromPool(tag[0], transform.position, transform.rotation);
+        objectPooler.SpawnFromPool(tagg[0], transform.position, transform.rotation);
 		healthbar -= 100;
 
 		

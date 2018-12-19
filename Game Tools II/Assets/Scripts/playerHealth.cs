@@ -5,13 +5,15 @@ using UnityEngine.UI;
 
 public class playerHealth : MonoBehaviour
 {
-
+    //Public Variables
     public Slider healthBar;
-    Animator anim;
     public string opponent;
-    private bool pDead;
     public float hitTimer;
     public float hitCoolDown;
+
+    //Private Variables
+    Animator anim;
+    private bool pDead;
 
 
     void Start()
@@ -20,7 +22,7 @@ public class playerHealth : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (healthBar.value <= 0 && !pDead)
+        if (healthBar.value <= 0 && !pDead)                         //if health reachs 0, die. bool to stop the trigger being constantly called
         {
             anim.SetTrigger("Death");
             pDead = true;
@@ -28,13 +30,13 @@ public class playerHealth : MonoBehaviour
 
         if (hitTimer > 0)
         {
-            hitTimer -= Time.deltaTime;
+            hitTimer -= Time.deltaTime;                             //cooldwon on damage so the healthbar doesnt drain in one frame
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag != opponent)
+        if (other.gameObject.tag != opponent)                       //if the tag on the other is Enemy, damage the player
         {
             return;
         }
@@ -44,14 +46,7 @@ public class playerHealth : MonoBehaviour
             {
                 healthBar.value -= 10;
                 hitTimer = hitCoolDown;
-            }
-
-
-        
+            }       
         }
-
     }
-
-
-
 }

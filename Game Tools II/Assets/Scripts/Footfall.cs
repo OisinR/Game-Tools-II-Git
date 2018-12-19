@@ -7,48 +7,31 @@ public class Footfall : MonoBehaviour {
     [SerializeField] AudioClip m_audioClip;
 
     private enum Direction { right, left };
-
-    private Animator m_animator;
-    private Transform m_rightFootTransform;
-    private Transform m_leftFootTransform;
-
     private AudioSource m_audioSource;
-
-
 
     private void Start()
     {
-        if (GetComponent<Animator>())
-        {
-            m_animator = GetComponent<Animator>();
-
-            m_rightFootTransform = m_animator.GetBoneTransform(HumanBodyBones.RightFoot);
-            m_leftFootTransform = m_animator.GetBoneTransform(HumanBodyBones.LeftFoot);
-        }
         m_audioSource = GetComponent<AudioSource>();
     }
 
     public void MakeFootprint(int scale)
     {
-        //Debug.Log("Footprint");
 
         Direction footDirection;
 
-        if (scale > 0) // left foot
+        if (scale > 0)
         {
             footDirection = Direction.left;
-            //Instantiate(m_footprint, m_leftFootTransform.position, m_leftFootTransform.rotation);
         }
-        else // right foot
+        else
         {
             footDirection = Direction.right;
-            //Instantiate(m_footprint, m_rightFootTransform.position, m_rightFootTransform.rotation);
         }
 
         PlaySound(footDirection);
     }
 
-    private void PlaySound(Direction footDirection)
+    private void PlaySound(Direction footDirection)                                 //only want to play sound so rest of footprint isnt needed
     {
 
         if (m_audioSource != null)

@@ -10,12 +10,12 @@ public class Score : MonoBehaviour {
 
     void Start ()
     {
-        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();
+        scoreText = GameObject.FindGameObjectWithTag("Score").GetComponent<Text>();             //grabs the score
     }
 	
 	public void AddScore()
     {
-        score += 100;
+        score += 100;                                                                           //adds to the score when the function is called
         scoreText.text = "Score: " + score;
     }
 }

@@ -5,59 +5,48 @@ using UnityEngine.AI;
 
 public class NPC : MonoBehaviour, Ipoolable
 {
-
-    private enum NPCstate { chase, patrol, attack };
+    //Private Variables
+    private enum NPCstate { chase, attack };
     private NPCstate pNPCState;
     private NavMeshAgent pAgent;
-    private int pCurrentWaypoint;
     private bool pIsPlayerNear;
-    public Animator pAnim;
-    public bool dead;
-    public bool readyToRespawn;
     private float removedFromScene;
     private float deathTimer = 3f;
-
-    public bool readyToPool;
-
     private Collider pCol;
+    private GameObject player;
+    private GameObject Enemy;
 
-    detectHit detectHit;
-
-    private Rigidbody pRb;
-    //[SerializeField] Manager pManager;
     [SerializeField] Collider hitbox;
     [SerializeField] float pFieldOfView;
     [SerializeField] float pThresholdDistance;
     [SerializeField] Transform[] Waypoints;
-    private GameObject player;
-    private GameObject Enemy;
 
-    Navmeshfix navMeshFix;
+    //Public Variables
+    public Animator pAnim;
+    public bool dead;
+    public bool readyToRespawn;
+    public bool readyToPool;
+
 
     void Awake()
     {
         OnObjectPooled();
     }
 
-    public void OnObjectPooled()
+    public void OnObjectPooled()                                                        //when pooled, grab everything thats needed
     {
         readyToPool = false;
         dead = false;
-        detectHit = GetComponent<detectHit>();
         pCol = GetComponent<Collider>();
         pAgent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
         pAnim = GetComponent<Animator>();
         pAgent = GetComponent<NavMeshAgent>();
-        pRb = GetComponent<Rigidbody>();
-        navMeshFix = GetComponent<Navmeshfix>();
-
 
         pAnim.SetLayerWeight(1, 1);
         removedFromScene = 2f;
         deathTimer = 3f;
         pNPCState = NPCstate.chase;
-        pCurrentWaypoint = 0;
         pCol.enabled = true;
         pAgent.enabled = true;
         pAgent.updatePosition = false;
@@ -69,7 +58,7 @@ public class NPC : MonoBehaviour, Ipoolable
 
     void Update()
     {
-        if (dead)
+        if (dead)                                                                                           //when killed, play animation and wait for it to finish
         {
             if (deathTimer > 0)
             {
@@ -77,28 +66,25 @@ public class NPC : MonoBehaviour, Ipoolable
             }
             else
             {
-                transform.Translate(Vector3.down * Time.deltaTime, Space.World);
+                transform.Translate(Vector3.down * Time.deltaTime, Space.World);                            //after animation is done, sink through the floor and out of sight
                 if (removedFromScene > 0)
                 {
-                    removedFromScene -= Time.deltaTime;
+                    removedFromScene -= Time.deltaTime;                                                     //wait unitl completely gone
                 }
                 else
                 {
-                    gameObject.SetActive(false);
+                    gameObject.SetActive(false);                                                            //then send it back into the pool
                     readyToPool = true;
                 }
             }
             return;
         }
-        if (pAgent != null) { pAgent.nextPosition = transform.position; }
+        if (pAgent != null) { pAgent.nextPosition = transform.position; }                                   //makes sure the navmesh agent is there
         CheckPlayer();
         switch (pNPCState)
         {
             case NPCstate.chase:
                 Chase();
-                break;
-            case NPCstate.patrol:
-                Patrol();
                 break;
             case NPCstate.attack:
                 Attack();
@@ -112,14 +98,15 @@ public class NPC : MonoBehaviour, Ipoolable
 
     void CheckPlayer()
     {
-        if (Vector3.Distance(player.transform.position, transform.position) < 1f  && pNPCState == NPCstate.chase)
+        if (Vector3.Distance(player.transform.position, transform.position) < 1f  && pNPCState == NPCstate.chase)           //if the enemy is close to the player, attack
         {
             pNPCState = NPCstate.attack;
             HandleAnimation();
             return;
         }
-        
-        if (Vector3.Distance(player.transform.position, transform.position) > 1.2f && pNPCState == NPCstate.attack)
+
+        if (Vector3.Distance(player.transform.position, transform.position) > 1.2f && pNPCState == NPCstate.attack)         //otherwise chase
+//a bit of leniency to make sure the enemy doesnt keep flickering between states ^
         {
             pNPCState = NPCstate.chase;
             HandleAnimation();
@@ -136,94 +123,8 @@ public class NPC : MonoBehaviour, Ipoolable
 
     void Attack()
     {
-        pAnim.applyRootMotion = false;
+        pAnim.applyRootMotion = false;                                                          //when near player, stop root motion an play attack animations
         pAnim.SetBool("Attack", true);
-    }
-
-    private bool CheckFieldOfView()
-    {
-        Vector3 direction = player.transform.position - this.transform.position;
-        Vector3 angle = Quaternion.FromToRotation(transform.forward, direction).eulerAngles;
-
-        if (angle.y > 180.0f) angle.y = 360.0f - angle.y;
-        else if (angle.y < -180.0f) angle.y = angle.y + 360.0f;
-
-
-        if (angle.y < pFieldOfView / 2)
-        {
-            return true;
-        }
-        return false;
-    }
-    bool CheckOclusion()
-    {
-        RaycastHit hit;
-        Vector3 direction = player.transform.position - transform.position;
-        if (Physics.Raycast(this.transform.position, direction, out hit, 5.0f))
-        {
-            if (hit.collider.gameObject == player)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private void Patrol()
-    {
-        //CheckWaypointDistance();
-        //pAgent.SetDestination(Waypoints[pCurrentWaypoint].position);
-    }
-
-    private void CheckWaypointDistance()
-    {
-        if (Vector3.Distance(Waypoints[pCurrentWaypoint].position, transform.position) < pThresholdDistance)
-        {
-            pCurrentWaypoint = (pCurrentWaypoint + 1) % Waypoints.Length;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player" && CheckFieldOfView())
-        {
-            pIsPlayerNear = true;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            pIsPlayerNear = false;
-        }
-    }
-
-    private void OnCollisionStay(Collision other)
-    {
-        if (other.gameObject.tag == "Player" && CheckFieldOfView())
-        {
-           // pManager.DecreaseHealth();
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 5.0f);
-
-        Gizmos.color = Color.red;
-        if (player != null)
-        {
-            Vector3 direction = player.transform.position - transform.position;
-            Gizmos.DrawRay(transform.position, direction);
-        }
-
-        Vector3 rightDirection = Quaternion.AngleAxis(pFieldOfView / 2, Vector3.up) * transform.forward;
-        Vector3 leftDirection = Quaternion.AngleAxis(-pFieldOfView / 2, Vector3.up) * transform.forward;
-        Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, rightDirection * 5f);
-        Gizmos.DrawRay(transform.position, leftDirection * 5f);
     }
 
     void HandleAnimation()
