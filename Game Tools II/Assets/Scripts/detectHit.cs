@@ -18,6 +18,12 @@ public class detectHit : MonoBehaviour {
     private NavMeshAgent pAgent;
     private bool isNPC;
 
+    public GameObject blood;
+
+    ObjectPooler objectPooler;
+    [SerializeField] string[] tag;
+
+
     Score score;
 
     public bool clickykilly;
@@ -28,6 +34,7 @@ public class detectHit : MonoBehaviour {
 
     private void Start()
     {
+        objectPooler = ObjectPooler.Instance;
         GetComponents();
     }
 
@@ -73,7 +80,8 @@ public class detectHit : MonoBehaviour {
     void OnTriggerEnter(Collider other)
 	{
 		if(other.gameObject.tag != opponent) return;
-
+        objectPooler.SpawnFromPool(tag[0], transform.position, transform.rotation);
+        //Instantiate(blood, transform.position, Quaternion.identity);
 		healthbar -= 100;
 
 		

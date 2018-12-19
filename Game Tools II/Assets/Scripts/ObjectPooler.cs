@@ -9,7 +9,7 @@ public class ObjectPooler : MonoBehaviour
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public string nameTag;
         public GameObject prefab;
         public int size;
     }
@@ -47,31 +47,37 @@ public class ObjectPooler : MonoBehaviour
                 objectpool.Enqueue(go);
             }
 
-            poolsDictionaray.Add(pool.tag, objectpool);
+            poolsDictionaray.Add(pool.nameTag, objectpool);
         }
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(string nameTag, Vector3 position, Quaternion rotation)
     {
-        if (!poolsDictionaray.ContainsKey(tag))
+        if (!poolsDictionaray.ContainsKey(nameTag))
         {
             return null;
         }
-        GameObject go = poolsDictionaray[tag].Dequeue();
+        GameObject go = poolsDictionaray[nameTag].Dequeue();
         if (go.activeInHierarchy)
         {
-            poolsDictionaray[tag].Enqueue(go);
+            poolsDictionaray[nameTag].Enqueue(go);
             return go;
         }
         go.SetActive(true);
         go.transform.position = position;
         go.transform.rotation = rotation;
+        if (go.tag != "Blood")
+        {
 
-        Rigidbody pRb = go.AddComponent<Rigidbody>();
-        go.GetComponent<detectHit>().pDead = false;
-        pRb.constraints = RigidbodyConstraints.FreezeRotation;
+            Rigidbody pRb = go.AddComponent<Rigidbody>();
 
-        poolsDictionaray[tag].Enqueue(go);
+            go.GetComponent<detectHit>().pDead = false;
+            pRb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        }
+
+        
+        poolsDictionaray[nameTag].Enqueue(go);
         Ipoolable objectToPool = go.GetComponent<Ipoolable>();
         objectToPool.OnObjectPooled();
 

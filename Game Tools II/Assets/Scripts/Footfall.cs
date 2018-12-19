@@ -30,7 +30,7 @@ public class Footfall : MonoBehaviour {
 
     public void MakeFootprint(int scale)
     {
-        Debug.Log("Footprint");
+        //Debug.Log("Footprint");
 
         Direction footDirection;
 
